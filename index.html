@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-access="false" data-speech="false">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyPath — Airport Wayfinding Kiosk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ BACKGROUND DECOR ============ -->
+<div class="bg-decor" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-blob bg-blob-a"></div>
+  <div class="bg-blob bg-blob-b"></div>
+  <div class="bg-blob bg-blob-c"></div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div class="kiosk">
+
+  <!-- ============ HEADER ============ -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        </div>
+        <div class="brand-text">
+          <strong id="brand-name">SkyPath</strong>
+          <span id="brand-tag" data-i18n="tagline">Harare International Airport</span>
+        </div>
+      </div>
+
+      <nav class="mainnav" id="mainnav" aria-label="Main">
+        <button class="navtab active" data-view="home" data-i18n="nav.home">Home</button>
+        <button class="navtab" data-view="map" data-i18n="nav.map">Find My Way</button>
+        <button class="navtab" data-view="flights" data-i18n="nav.flights">Flights</button>
+        <button class="navtab" data-view="transport" data-i18n="nav.transport">Transport</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button class="iconbtn" id="langBtn" aria-label="Language" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="langCode">EN</span>
+        </button>
+        <div class="langmenu" id="langMenu" role="menu" aria-label="Language selection">
+          <button data-lang="en" role="menuitem"><span class="lang-flag">🇬🇧</span> English</button>
+          <button data-lang="fr" role="menuitem"><span class="lang-flag">🇫🇷</span> Français</button>
+          <button data-lang="zu" role="menuitem"><span class="lang-flag">🇿🇦</span> isiZulu</button>
+          <button data-lang="sn" role="menuitem"><span class="lang-flag">🇿🇼</span> Shona</button>
+          <button data-lang="nd" role="menuitem"><span class="lang-flag">🇿🇼</span> Ndebele</button>
+        </div>
+
+        <button class="iconbtn" id="accessBtn" aria-pressed="false" aria-label="Accessibility mode" title="Accessibility mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="6.5" r="1.6"/><path d="M7 10.5c2.2.8 4.8.8 7 0"/><path d="M12 11.5V17l-2.4 4"/><path d="M12 15l2.6 3"/></svg>
+        </button>
+
+        <button class="iconbtn live" id="voiceBtn" aria-pressed="false" aria-label="Voice guidance" title="Voice guidance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+        </button>
+
+        <div class="clockchip" id="clock" title="Local time">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span id="clockTime">--:--</span>
+        </div>
+
+        <button class="iconbtn cta" id="assistBtn" aria-label="AI Assistant" title="Ask Skylar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ALERT TICKER ============ -->
+  <div class="ticker" id="ticker" aria-label="Live alerts">
+    <span class="ticker-live"><span class="dot-pulse"></span> LIVE</span>
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <!-- ============ VIEWS ============ -->
+  <main class="stage" id="stage">
+
+    <!-- ===== HOME ===== -->
+    <section class="view active" id="view-home" data-view="home">
+      <div class="hero">
+        <p class="hero-eyebrow" data-i18n="home.eyebrow">Welcome to Robert Gabriel Mugabe International Airport</p>
+        <h1 class="hero-title" id="heroTitle" data-i18n="home.title">Where are you going?</h1>
+        <p class="hero-sub" data-i18n="home.sub">Search a gate, flight, facility or destination — I'll guide you there.</p>
+
+        <div class="hero-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="heroSearch" type="text" autocomplete="off" placeholder="e.g. Gate B14, flight ZW123, coffee, Victoria Falls" data-i18n-ph="home.searchph">
+          <button class="btn btn-primary btn-lg" id="heroSearchBtn" data-i18n="home.go">Find my way</button>
+        </div>
+        <div class="hero-suggest" id="heroSuggest" aria-label="Popular searches"></div>
+      </div>
+
+      <div class="quickgrid">
+        <button class="quickcard quick-map" data-go="map" tabindex="0">
+          <span class="quick-ico" data-i18n-ico="nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 22 2l-9 19-2-8-8-2Z"/></svg>
+          </span>
+          <span class="quick-txt"><strong data-i18n="nav.map">Find My Way</strong><small data-i18n="home.q1sub">Interactive terminal map</small></span>
+          <svg class="quick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="quickcard quick-flights" data-go="flights" tabindex="0">
+          <span class="quick-ico" data-i18n-ico="plane">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+          </span>
+          <span class="quick-txt"><strong data-i18n="nav.flights">Live Flights</strong><small data-i18n="home.q2sub">Departures &amp; arrivals</small></span>
+          <svg class="quick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="quickcard quick-transport" data-go="transport" tabindex="0">
+          <span class="quick-ico" data-i18n-ico="car">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          </span>
+          <span class="quick-txt"><strong data-i18n="nav.transport">Ground Transport</strong><small data-i18n="home.q3sub">Taxis, shuttles, trains</small></span>
+          <svg class="quick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="quickcard quick-discover" data-go="map" data-poi="discover" tabindex="0">
+          <span class="quick-ico" data-i18n-ico="bag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </span>
+          <span class="quick-txt"><strong data-i18n="nav.discover">Discover</strong><small data-i18n="home.q4sub">Shops, food, lounges &amp; more</small></span>
+          <svg class="quick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="disruption" id="disruptionBanner">
+        <span class="disruption-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </span>
+        <div class="disruption-txt">
+          <span class="badge badge-warn" data-i18n="home.gatechange">GATE CHANGE</span>
+          <strong>Flight ZW123 · Harare → Johannesburg</strong>
+          <span id="disruptionDetail">New gate: <b>B14</b> &nbsp;·&nbsp; Previous gate: B8 &nbsp;·&nbsp; Boarding 09:00</span>
+        </div>
+        <button class="btn btn-ghost" id="disruptionNav" data-i18n="home.navigategate">Navigate to B14</button>
+      </div>
+
+      <section class="discover-row">
+        <div class="section-head">
+          <h2 data-i18n="home.discover">Explore the terminal</h2>
+          <button class="linkbtn" data-go="map" data-poi="discover" data-i18n="home.seeall">See all</button>
+        </div>
+        <div class="poichips" id="poiChips"></div>
+      </section>
+
+      <footer class="footnote">
+        <p data-i18n="home.footnote">SkyPath is a layered wayfinding system — it supports, never replaces, airport signage and emergency procedures.</p>
+      </footer>
+    </section>
+
+    <!-- ===== MAP ===== -->
+    <section class="view" id="view-map" data-view="map">
+      <div class="map-layout">
+
+        <aside class="map-panel">
+          <div class="panel-head">
+            <h2 data-i18n="map.title">Find My Way</h2>
+            <div class="floortoggle" role="tablist" aria-label="Floor">
+              <button class="floorbtn" data-floor="L2" role="tab" aria-selected="true">L2 <small data-i18n="map.lvl2">Departures</small></button>
+              <button class="floorbtn" data-floor="L1" role="tab" aria-selected="false">L1 <small data-i18n="map.lvl1">Arrivals</small></button>
+            </div>
+          </div>
+
+          <div class="map-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="mapSearch" type="text" autocomplete="off" placeholder="Search gate, shop, facility..." data-i18n-ph="map.searchph">
+          </div>
+
+          <div class="map-dest-list" id="mapDestList" aria-label="Destinations"></div>
+
+          <div class="route-card hidden" id="routeCard">
+            <div class="route-head">
+              <span class="youhere-dot"></span>
+              <div>
+                <span class="route-label" id="routeLabel" data-i18n="map.route">Route</span>
+                <strong id="routeDestName">—</strong>
+              </div>
+              <button class="iconbtn sm" id="routeQr" aria-label="Send to phone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M14 14h3v3h-3zM17 17h4v4h-4zM14 20v.01M20 14v.01M20 20h.01"/></svg>
+              </button>
+            </div>
+            <div class="route-stats">
+              <div class="stat"><strong id="routeDist">0 m</strong><span data-i18n="map.dist">Distance</span></div>
+              <div class="stat"><strong id="routeTime">0 min</strong><span data-i18n="map.time">Walking time</span></div>
+              <div class="stat"><strong id="routeCals">0</strong><span data-i18n="map.floor">Floor</span></div>
+            </div>
+            <div class="access-note hidden" id="accessNote">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="6.5" r="1.6"/><path d="M7 10.5c2.2.8 4.8.8 7 0"/><path d="M12 11.5V17l-2.4 4"/><path d="M12 15l2.6 3"/></svg>
+              <span id="accessNoteTxt" data-i18n="map.accessnote">Accessible route selected · lifts only, no stairs</span>
+            </div>
+            <ol class="route-steps" id="routeSteps"></ol>
+            <div class="route-actions">
+              <button class="btn btn-primary" id="routeStartOver" data-i18n="map.replan">Replan</button>
+              <button class="btn btn-cta" id="routeStart" data-i18n="map.startnav">Start navigation</button>
+            </div>
+          </div>
+
+          <div class="map-legend">
+            <span><i class="lg youhere-dot"></i> You</span>
+            <span><i class="lg dest-dot"></i> Destination</span>
+            <span><i class="lg route-line"></i> Route</span>
+          </div>
+        </aside>
+
+        <div class="map-canvas" id="mapCanvas" role="application" aria-label="Interactive terminal map">
+          <div class="map-topinfo">
+            <span class="floor-pill" id="mapFloorPill">L2 · Departures</span>
+            <span class="map-zoom-hint" data-i18n="map.hint">Touch a marker to navigate</span>
+          </div>
+          <div class="map-svg" id="mapSvg"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FLIGHTS ===== -->
+    <section class="view" id="view-flights" data-view="flights">
+      <div class="flights-head">
+        <div>
+          <h2 data-i18n="flights.title">Live flight information</h2>
+          <p class="view-sub" data-i18n="flights.sub">Real-time departures &amp; arrivals for today</p>
+        </div>
+        <div class="flights-actions">
+          <div class="seg toggle" role="tablist">
+            <button class="segbtn active" data-tab="dep" role="tab" aria-selected="true" data-i18n="flights.dep">Departures</button>
+            <button class="segbtn" data-tab="arr" role="tab" aria-selected="false" data-i18n="flights.arr">Arrivals</button>
+          </div>
+          <div class="flight-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="flightSearch" type="text" autocomplete="off" placeholder="Flight no. or city" data-i18n-ph="flights.searchph">
+          </div>
+        </div>
+      </div>
+
+      <div class="board" id="flightBoard"></div>
+
+      <div class="flight-feature" id="flightFeature">
+        <div class="feature-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </div>
+        <div class="feature-txt">
+          <strong data-i18n="flights.dynamic">Dynamic disruption handling</strong>
+          <span data-i18n="flights.dynamicsub">ZW123's gate changed from B8 to B14. SkyPath re-routes every passenger instantly — including this one.</span>
+        </div>
+        <button class="btn btn-ghost" id="featureNav" data-i18n="home.navigategate">Navigate to B14</button>
+      </div>
+    </section>
+
+    <!-- ===== TRANSPORT ===== -->
+    <section class="view" id="view-transport" data-view="transport">
+      <div class="transport-head">
+        <div>
+          <h2 data-i18n="transport.title">Get to your destination</h2>
+          <p class="view-sub" data-i18n="transport.sub">Airport → City &amp; hotels — every option, one screen</p>
+        </div>
+        <div class="transport-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="transportSearch" type="text" autocomplete="off" placeholder="Hotel, suburb or attraction" data-i18n-ph="transport.searchph">
+        </div>
+      </div>
+
+      <div class="transport-grid" id="transportGrid"></div>
+
+      <section class="dest-intel" id="destIntel">
+        <div class="section-head">
+          <h2 data-i18n="transport.desthead">Destination intelligence</h2>
+          <span class="pill-soft" data-i18n="transport.gateway">Airport → Zimbabwe</span>
+        </div>
+        <div class="intel-cards" id="intelCards"></div>
+      </section>
+    </section>
+
+  </main>
+
+  <!-- ============ ASSISTANT ============ -->
+  <div class="assist" id="assist" aria-hidden="true">
+    <div class="assist-head">
+      <div class="assist-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
+      </div>
+      <div class="assist-id">
+        <strong>Skylar</strong>
+        <span id="assistStatus"><span class="dot-pulse"></span> AI Assistant · online</span>
+      </div>
+      <button class="iconbtn sm" id="assistClose" aria-label="Close assistant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="assist-body" id="assistBody"></div>
+    <div class="assist-chips" id="assistChips"></div>
+    <div class="assist-input">
+      <input id="assistInput" type="text" placeholder="Ask me anything… e.g. &quot;45 minutes before boarding?&quot;" data-i18n-ph="assist.ph">
+      <button class="iconbtn cta" id="assistSend" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ QR MODAL ============ -->
+  <div class="modal-backdrop" id="qrModal" aria-hidden="true">
+    <div class="modal">
+      <button class="iconbtn sm modal-x" id="qrClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="8" height="8" rx="2"/><path d="M11 12h2"/><path d="M12 11v2"/></svg>
+      </div>
+      <h3 id="qrTitle" data-i18n="qr.title">Continue on your phone</h3>
+      <p id="qrSub" data-i18n="qr.sub">Scan to take this route with you. Turn-by-turn guidance stays in your pocket.</p>
+      <div class="qr-frame">
+        <canvas id="qrCanvas" width="220" height="220" aria-label="QR code"></canvas>
+      </div>
+      <p class="qr-code" data-i18n="qr.code">skypath.app / ZW-HRE / B14</p>
+      <div class="qr-steps" data-i18n="qr.steps">1 · Open your camera · 2 · Scan the code · 3 · Follow the blue line</div>
+      <button class="btn btn-primary btn-lg" id="qrDone" data-i18n="qr.done">Done</button>
+    </div>
+  </div>
+
+  <!-- ============ NAV OVERLAY (mobile walkthrough) ============ -->
+  <div class="nav-overlay hidden" id="navOverlay" aria-hidden="true">
+    <div class="nav-overlay-inner">
+      <div class="nav-overlay-head">
+        <span class="youhere-dot lg"></span>
+        <strong id="navOverlayTitle">Navigation started</strong>
+        <button class="iconbtn sm" id="navOverlayClose" aria-label="Stop navigation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="nav-overlay-step" id="navOverlayStep"></div>
+      <div class="nav-overlay-next">
+        <strong id="navOverlayDest">—</strong>
+        <span id="navOverlayMeta">—</span>
+      </div>
+      <div class="nav-overlay-progress"><div class="nav-overlay-bar" id="navOverlayBar"></div></div>
+      <div class="nav-overlay-actions">
+        <button class="btn btn-ghost" id="navOverlayNext" data-i18n="map.nextstep">Next</button>
+        <button class="btn btn-primary" id="navOverlayQr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M14 14h3v3h-3zM17 17h4v4h-4zM14 20v.01M20 14v.01M20 20h.01"/></svg>
+          <span data-i18n="qr.sendphone">Send to phone</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
