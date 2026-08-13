@@ -97,7 +97,7 @@
       transport_title: 'Get to your destination', transport_sub: 'Airport \u2192 City & hotels — every option, one screen',
       transport_searchph: 'Hotel, suburb or attraction', desthead: 'Destination intelligence', gateway: 'Airport \u2192 Zimbabwe',
       qr_title: 'Continue on your phone', qr_sub: 'Scan to take this route with you. Turn-by-turn guidance stays in your pocket.',
-      qr_steps: '1 · Open your camera · 2 · Scan the code · 3 · Follow the blue line', qr_done: 'Done', sendphone: 'Send to phone',
+      qr_steps: '1 · Open your camera · 2 · Scan the code · 3 · Follow the blue line', qr_done: 'Done', sendphone: 'Send to phone', backhome: 'Back to home',
       assist_ph: 'Ask me anything… e.g. "45 minutes before boarding?"',
       youhere: 'You are here', walk: 'Walk', along: 'along', then: 'then', turn: 'Turn',
       navstarted: 'Navigation started', to: 'to'
@@ -124,7 +124,7 @@
       transport_title: 'Rejoignez votre destination', transport_sub: 'Aéroport \u2192 ville & hôtels — toutes les options, un seul écran',
       transport_searchph: 'Hôtel, quartier ou attraction', desthead: 'Intelligence de destination', gateway: 'Aéroport \u2192 Zimbabwe',
       qr_title: 'Continuez sur votre téléphone', qr_sub: 'Scannez pour emporter cet itinéraire avec vous.',
-      qr_steps: '1 · Ouvrez la caméra · 2 · Scannez · 3 · Suivez la ligne bleue', qr_done: 'Terminé', sendphone: 'Envoyer au téléphone',
+      qr_steps: '1 · Ouvrez la caméra · 2 · Scannez · 3 · Suivez la ligne bleue', qr_done: 'Terminé', sendphone: 'Envoyer au téléphone', backhome: 'Retour à l\u2019accueil',
       assist_ph: 'Posez-moi une question… ex. "45 minutes avant l\u2019embarquement ?"',
       youhere: 'Vous êtes ici', walk: 'Marchez', along: 'le long de', then: 'puis', turn: 'Tournez',
       navstarted: 'Navigation démarrée', to: 'vers'
@@ -151,7 +151,7 @@
       transport_title: 'Fika lapho uya khona', transport_sub: 'Isikhumulo \u2192 idolobha & amahhotela — zonke izinketho esikrinini esisodwa',
       transport_searchph: 'Ihhotela, indawo noma indawo ekhangayo', desthead: 'Ulwazi ngendawo', gateway: 'Isikhumulo \u2192 Zimbabwe',
       qr_title: 'Qhubeka ngocingo lwakho', qr_sub: 'Skene ukuthatha lo mzila nawe.',
-      qr_steps: '1 · Vula ikhamera · 2 · Skene · 3 · Landela umugqa oluhlaza', qr_done: 'Kuphelile', sendphone: 'Thumela ocingweni',
+      qr_steps: '1 · Vula ikhamera · 2 · Skene · 3 · Landela umugqa oluhlaza', qr_done: 'Kuphelile', sendphone: 'Thumela ocingweni', backhome: 'Buyela ekhaya',
       assist_ph: 'Ngibuze noma yini… isb. "imizuzu engu-45 ngaphambi kokukhwela?"',
       youhere: 'Ulapha', walk: 'Hamba', along: 'ngakhona', then: 'bese', turn: 'Phenduka',
       navstarted: 'Ukuzulazula kuqalile', to: 'ukuya'
@@ -178,7 +178,7 @@
       transport_title: 'Svika kwawaenda', transport_sub: 'Nhandare \u2192 guta & mahotera — sarudzo dzose pachikuru chimwe',
       transport_searchph: 'Hotera, nzvimbo kana nzvimbo inoshamisa', desthead: 'Ruzivo rwenzvimbo', gateway: 'Nhandare \u2192 Zimbabwe',
       qr_title: 'Endereza parunhare rwako', qr_sub: 'Scan kuti utore nzira iyi newe.',
-      qr_steps: '1 · Vhura kamera · 2 · Scan · 3 · Tevedza mutsetse webhururu', qr_done: 'Zvaitwa', sendphone: 'Tumira kurunhare',
+      qr_steps: '1 · Vhura kamera · 2 · Scan · 3 · Tevedza mutsetse webhururu', qr_done: 'Zvaitwa', sendphone: 'Tumira kurunhare', backhome: 'Dzokera kumba',
       assist_ph: 'Ndibvunze chero chinhu… semuenzaniso "maminetsi 45 tisati takwira?"',
       youhere: 'Muri pano', walk: 'Famba', along: 'ne', then: 'ipapo', turn: 'Tendeuka',
       navstarted: 'Kufamba kwakatanga', to: 'kuenda'
@@ -205,7 +205,7 @@
       transport_title: 'Fika lapho uya khona', transport_sub: 'Isikhumulo \u2192 idorobha & amahhotela — zonke izindlela esikrinini sinye',
       transport_searchph: 'Ihhotela, indawo loba okhangayo', desthead: 'Ulwazi ngendawo', gateway: 'Isikhumulo \u2192 Zimbabwe',
       qr_title: 'Qhubeka ngocingo lwakho', qr_sub: 'Skene ukuthatha lo mzila nawe.',
-      qr_steps: '1 · Vula ikhamera · 2 · Skene · 3 · Landela umugqa oluhlaza', qr_done: 'Kuphele', sendphone: 'Thumela ocingweni',
+      qr_steps: '1 · Vula ikhamera · 2 · Skene · 3 · Landela umugqa oluhlaza', qr_done: 'Kuphele', sendphone: 'Thumela ocingweni', backhome: 'Buyela ekhaya',
       assist_ph: 'Ngibuze loba yini… isb. "imizuzu engu-45 ngaphambi kokukhwela?"',
       youhere: 'Ulapha', walk: 'Hamba', along: 'ngakhona', then: 'bese', turn: 'Phenduka',
       navstarted: 'Ukuzulazula kuqalile', to: 'ukuya'
@@ -459,9 +459,13 @@
   const $canvas = $('#mapCanvas');
   const YOUHERE = { L2: 'sec', L1: 'arrHere' };
 
-  function zoneRect(x, y, w, h, label, opts) {
-    return `<rect class="mzone" x="${x}" y="${y}" width="${w}" height="${h}" rx="12" ${opts && opts.dash ? 'stroke-dasharray="5 4"' : ''}/>
-      <text class="mzone-label" x="${x + 10}" y="${y + (opts && opts.bottom ? h - 8 : 16)}">${label}</text>`;
+  function zoneRect(x, y, w, h, opts) {
+    return `<rect class="mzone" x="${x}" y="${y}" width="${w}" height="${h}" rx="12" ${opts && opts.dash ? 'stroke-dasharray="5 4"' : ''}/>`;
+  }
+
+  function zoneLabel(x, y, text) {
+    const w = Math.max(44, text.length * 7 + 20);
+    return `<g class="zlabel"><rect x="${x - w / 2}" y="${y - 11}" width="${w}" height="22" rx="11" fill="#fff" stroke="#BAE6FD" stroke-width="1.5"/><text x="${x}" y="${y + 4}" text-anchor="middle">${text}</text></g>`;
   }
 
   function buildSvg(level, destId) {
@@ -471,11 +475,11 @@
     parts.push(`<rect x="0" y="0" width="1000" height="620" rx="16" fill="url(#mapBg)"/>`);
 
     if (level === 'L2') {
-      parts.push(zoneRect(85, 285, 880, 50, 'MAIN CONCOURSE'));
-      parts.push(zoneRect(140, 65, 740, 55, 'PIER A — DEPARTURES'));
-      parts.push(zoneRect(140, 500, 740, 55, 'PIER B — DEPARTURES'));
-      parts.push(zoneRect(885, 65, 100, 55, 'SKY LOUNGE'));
-      parts.push(zoneRect(885, 250, 100, 120, 'GROUND TRANSPORT'));
+      parts.push(zoneRect(85, 285, 880, 50));
+      parts.push(zoneRect(140, 65, 740, 55));
+      parts.push(zoneRect(140, 500, 740, 55));
+      parts.push(zoneRect(885, 65, 100, 55));
+      parts.push(zoneRect(885, 250, 100, 120));
       parts.push('<rect x="15" y="205" width="60" height="210" rx="10" class="mzone"/><text class="mzone-label" transform="rotate(-90 45 310)" x="45" y="310" text-anchor="middle">SECURITY</text>');
       // gate boxes
       ['A1','A2','A3','A4','A5','A6'].forEach((g, i) => {
@@ -489,10 +493,10 @@
       parts.push('<g stroke="#BAE6FD" stroke-width="1.5" fill="none">' +
         [220,390,480,580,680,760,850,900,930,950].map(x => `<path d="M${x} 285 v50"/>`).join('') + '</g>');
     } else {
-      parts.push(zoneRect(180, 70, 640, 110, 'BAGGAGE CLAIM'));
-      parts.push(zoneRect(240, 200, 520, 70, 'CUSTOMS · PASSPORT CONTROL'));
-      parts.push(zoneRect(120, 395, 740, 50, 'ARRIVALS HALL'));
-      parts.push('<rect x="870" y="90" width="115" height="300" rx="12" class="mzone"/><text class="mzone-label" x="880" y="110">GROUND</text><text class="mzone-label" x="880" y="124">TRANSPORT</text>');
+      parts.push(zoneRect(180, 70, 640, 110));
+      parts.push(zoneRect(240, 200, 520, 70));
+      parts.push(zoneRect(120, 395, 740, 50));
+      parts.push('<rect x="870" y="90" width="115" height="300" rx="12" class="mzone"/>');
       ['1','2','3','4'].forEach((n, i) => {
         const x = 300 + i * 140;
         parts.push(`<circle cx="${x}" cy="120" r="30" class="mzone" style="fill:#EAF6FE;stroke:#7DD3FC;cursor:pointer" data-node="c${n}"/><text x="${x}" y="125" text-anchor="middle" font-size="13" font-weight="800" fill="#0369A1" style="pointer-events:none">C${n}</text>`);
@@ -512,6 +516,12 @@
       parts.push(`<text x="0" y="${labelY - n.y}" text-anchor="${labelAnchor}">${n.label}</text>`);
       parts.push('</g>');
     });
+
+    // Zone labels as pills on top of buttons (never overshadowed)
+    const zLabels = level === 'L2'
+      ? [ [140, 42, 'PIER A — DEPARTURES'], [140, 588, 'PIER B — DEPARTURES'], [140, 301, 'MAIN CONCOURSE'], [935, 80, 'SKY LOUNGE'], [935, 270, 'GROUND TRANSPORT'] ]
+      : [ [500, 52, 'BAGGAGE CLAIM'], [500, 220, 'CUSTOMS · PASSPORT CONTROL'], [150, 411, 'ARRIVALS HALL'], [927, 64, 'GROUND TRANSPORT'] ];
+    zLabels.forEach(([x, y, txt]) => parts.push(zoneLabel(x, y, txt)));
 
     // You are here
     const yh = YOUHERE[level];
@@ -613,6 +623,7 @@
     state.view = name;
     $$('.view').forEach((v) => v.classList.toggle('active', v.dataset.view === name));
     $$('.navtab').forEach((b) => b.classList.toggle('active', b.dataset.view === name));
+    $('#backHome').classList.toggle('hidden', name === 'home');
     if (name === 'map') { renderMap(); renderDestList($('#mapSearch').value); }
     if (name === 'flights') renderFlights(currentTab, $('#flightSearch').value);
     if (name === 'transport') { renderTransport($('#transportSearch').value); renderIntel(); }
@@ -845,6 +856,7 @@
     navIdx = 0;
     $('#navOverlay').classList.remove('hidden');
     $('#navOverlay').setAttribute('aria-hidden', 'false');
+    $('#backHome').classList.add('hidden');
     $('#navOverlayTitle').textContent = t('navstarted') + ' · ' + t('to') + ' ' + $('#routeDestName').textContent;
     showNavStep();
   }
@@ -868,6 +880,7 @@
     $('#navOverlayClose').addEventListener('click', () => {
       $('#navOverlay').classList.add('hidden');
       $('#navOverlay').setAttribute('aria-hidden', 'true');
+      $('#backHome').classList.toggle('hidden', state.view === 'home');
     });
     $('#navOverlayQr').addEventListener('click', () => { $('#navOverlay').classList.add('hidden'); openQr(); });
   }
@@ -1016,6 +1029,11 @@
     $('#routeStart').addEventListener('click', startNavOverlay);
     $('#routeStartOver').addEventListener('click', () => { state.route = null; state.dest = null; renderMap(); $('#routeCard').classList.add('hidden'); });
     $('#routeQr').addEventListener('click', openQr);
+
+    // back to home
+    const goHome = () => { $('#navOverlay').classList.add('hidden'); $('#navOverlay').setAttribute('aria-hidden', 'true'); showView('home'); };
+    $('#backHome').addEventListener('click', goHome);
+    $('#routeHome').addEventListener('click', goHome);
 
     // flights
     $$('.segbtn').forEach((b) => b.addEventListener('click', () => renderFlights(b.dataset.tab, $('#flightSearch').value)));
