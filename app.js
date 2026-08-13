@@ -613,13 +613,13 @@
     }
     showView('map');
     speakRoute(steps);
-    $('.map-canvas').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   /* ============================================================
      VIEWS
      ============================================================ */
   function showView(name) {
+    const prev = state.view;
     state.view = name;
     $$('.view').forEach((v) => v.classList.toggle('active', v.dataset.view === name));
     $$('.navtab').forEach((b) => b.classList.toggle('active', b.dataset.view === name));
@@ -627,7 +627,7 @@
     if (name === 'map') { renderMap(); renderDestList($('#mapSearch').value); }
     if (name === 'flights') renderFlights(currentTab, $('#flightSearch').value);
     if (name === 'transport') { renderTransport($('#transportSearch').value); renderIntel(); }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (name !== prev) window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   let currentTab = 'dep';
 
