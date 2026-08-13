@@ -458,11 +458,11 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .mzone-label { font-size: 10.5px; font-weight: 700; fill: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
 .mcorridor { stroke: #E8F4FD; stroke-width: 26; fill: none; }
 .mline { stroke: var(--sky-100); stroke-width: 1.5; fill: none; }
-.mpoi { cursor: pointer; transition: transform .15s; }
+.mpoi { cursor: pointer; transition: transform .15s; transform-box: fill-box; transform-origin: center; }
 .mpoi:hover { transform: scale(1.12); }
 .mpoi circle.bg { fill: #fff; stroke: var(--sky-200); stroke-width: 1.5; }
 .mpoi.hot circle.bg { fill: #fff; }
-.mpoi text { font-size: 11.5px; font-weight: 700; fill: var(--ink-soft); pointer-events: none; }
+.mp-label { font-size: 11.5px; font-weight: 700; fill: var(--ink-soft); pointer-events: none; }
 .mpoi.dim text { fill: #9FBBD0; }
 .mpoi.dim circle.bg { stroke: var(--sky-100); fill: #F6FBFE; }
 .mpoi.dim svg { opacity: .45; }
@@ -672,7 +672,7 @@ html[data-access="true"] .quick-ico { width: 64px; height: 64px; }
 html[data-access="true"] .hero-title { -webkit-text-fill-color: var(--sky-800); background: none; }
 html[data-access="true"] .btn, html[data-access="true"] .navtab, html[data-access="true"] .iconbtn { min-height: 48px; }
 html[data-access="true"] .topbar, html[data-access="true"] .ticker { border-width: 2px; border-color: var(--sky-700); }
-html[data-access="true"] .mpoi text { font-size: 14px; }
+html[data-access="true"] .mp-label { font-size: 14px; }
 html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-width: 2px; border-color: var(--sky-200); }
 
 /* ---------- reduced motion ---------- */

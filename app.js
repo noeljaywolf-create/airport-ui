@@ -510,10 +510,12 @@
       const cls = active ? 'mpoi hot' : 'mpoi';
       const labelY = n.y < 200 ? n.y - 20 : n.y + 22;
       const labelAnchor = 'middle';
-      parts.push(`<g class="${cls}" data-node="${n.id}" transform="translate(${n.x},${n.y})">`);
+      parts.push(`<g class="mp" data-node="${n.id}" transform="translate(${n.x},${n.y})">`);
+      parts.push(`<g class="${cls}">`);
       parts.push(`<circle class="bg" r="15" cx="0" cy="0"/>`);
       parts.push(`<g transform="translate(-10,-10)">${icon(n.icon, 20)}</g>`);
-      parts.push(`<text x="0" y="${labelY - n.y}" text-anchor="${labelAnchor}">${n.label}</text>`);
+      parts.push('</g>');
+      parts.push(`<text class="mp-label" x="0" y="${labelY - n.y}" text-anchor="${labelAnchor}">${n.label}</text>`);
       parts.push('</g>');
     });
 
