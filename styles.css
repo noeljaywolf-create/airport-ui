@@ -709,3 +709,19 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   .route-actions { flex-direction: column; }
   .route-actions .btn { width: 100%; }
 }
+
+/* ---------- RTL (Arabic) ---------- */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+html[dir="rtl"] .langmenu { right: auto; left: 0; }
+html[dir="rtl"] .langmenu button { text-align: right; }
+html[dir="rtl"] .navtabs { flex-direction: row-reverse; }
+html[dir="rtl"] .brand, html[dir="rtl"] .brand-text { flex-direction: row-reverse; }
+html[dir="rtl"] .topbar-actions { margin-right: auto; margin-left: 0; }
+html[dir="rtl"] .hero-eyebrow::before { display: none; }
+html[dir="rtl"] .board-row, html[dir="rtl"] .board-head { text-align: right; }
+html[dir="rtl"] .assist { right: auto; left: 16px; }
+html[dir="rtl"] .backhome { left: auto; right: 16px; }
+html[dir="rtl"] .assist-open .assist-ico { display: none; }
