@@ -18,7 +18,8 @@
     dest: null,            // selected node id
     access: false,
     voice: false,
-    nav: null              // active nav overlay steps
+    nav: null,           // active nav overlay steps
+    fitMode: 'route'     // 'route' = auto-fit to route, 'reset' = full terminal
   };
 
   /* ---------------- icon set (Lucide-style) ---------------- */
@@ -633,6 +634,7 @@
   function buildSvg(level, destId) {
     const parts = [];
     parts.push(`<svg viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Terminal map ${level}">`);
+    parts.push('<g id="mapView">');
     parts.push('<defs><linearGradient id="mapBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDFEFF"/><stop offset="1" stop-color="#EAF6FE"/></linearGradient></defs>');
     parts.push(`<rect x="0" y="0" width="1000" height="620" rx="16" fill="url(#mapBg)"/>`);
 
@@ -674,6 +676,7 @@
       const labelAnchor = 'middle';
       parts.push(`<g class="mp" data-node="${n.id}" transform="translate(${n.x},${n.y})">`);
       parts.push(`<g class="${cls}">`);
+      parts.push(`<circle class="mp-hit" r="26" cx="0" cy="0"/>`);
       parts.push(`<circle class="bg" r="15" cx="0" cy="0"/>`);
       parts.push(`<g transform="translate(-10,-10)">${icon(n.icon, 20)}</g>`);
       parts.push('</g>');
@@ -708,6 +711,7 @@
         }
       }
     }
+    parts.push('</g>');
     parts.push('</svg>');
     return parts.join('');
   }
@@ -722,7 +726,28 @@
       el.addEventListener('click', (e) => { e.stopPropagation(); selectDestination(el.dataset.node); });
       el.style.cursor = 'pointer';
     });
+    fitRouteView();
   }
+
+  /* ---- game-changer: the map auto-frames your route so it is always fully visible ---- */
+  const MAP_W = 1000, MAP_H = 620;
+  function fitRouteView() {
+    const view = $('#mapView');
+    if (!view) return;
+    if (!state.route || state.fitMode !== 'route') { view.style.transform = 'none'; return; }
+    const level = state.level;
+    const seg = state.route.segments.find((s) => s.level === level);
+    const pts = [[NODES[YOUHERE[level]].x, NODES[YOUHERE[level]].y]];
+    if (seg && seg.path && seg.path.length) seg.path.forEach((id) => pts.push([NODES[id].x, NODES[id].y]));
+    const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+    const bx0 = Math.min.apply(Math, xs), by0 = Math.min.apply(Math, ys);
+    const bx1 = Math.max.apply(Math, xs), by1 = Math.max.apply(Math, ys);
+    const PAD = 120;
+    const s = Math.max(1, Math.min(3.6, Math.min(MAP_W / (bx1 - bx0 + PAD * 2), MAP_H / (by1 - by0 + PAD * 2))));
+    const cxm = (bx0 + bx1) / 2, cym = (by0 + by1) / 2;
+    view.style.transform = `translate(${MAP_W / 2 - cxm * s}px, ${MAP_H / 2 - cym * s}px) scale(${s})`;
+  }
+  function resetMapView() { const v = $('#mapView'); if (v) v.style.transform = 'none'; }
 
   /* ---------------- destination selection + route card ---------------- */
   function destListItems() {
@@ -755,6 +780,7 @@
     // compute route from current-level "you are here"
     const start = YOUHERE[dest.level];
     state.route = route(start, id);
+    state.fitMode = 'route';
     renderMap(id);
     renderDestList($('#mapSearch').value);
 
@@ -1194,6 +1220,8 @@
     $('#routeStart').addEventListener('click', startNavOverlay);
     $('#routeStartOver').addEventListener('click', () => { state.route = null; state.dest = null; renderMap(); $('#routeCard').classList.add('hidden'); });
     $('#routeQr').addEventListener('click', openQr);
+    $('#zoomFit').addEventListener('click', () => { state.fitMode = 'route'; fitRouteView(); });
+    $('#zoomReset').addEventListener('click', () => { state.fitMode = 'reset'; resetMapView(); });
 
     // back to home
     const goHome = () => { $('#navOverlay').classList.add('hidden'); $('#navOverlay').setAttribute('aria-hidden', 'true'); showView('home'); };
@@ -1236,6 +1264,6 @@
   }
 
   // expose for console debugging
-  window.SkyPath = { state, selectDestination, showView, route, NODES };
+  window.SkyPath = { state, selectDestination, showView, route, NODES, fitRouteView, resetMapView };
   document.addEventListener('DOMContentLoaded', init);
 })();
