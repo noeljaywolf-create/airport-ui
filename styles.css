@@ -153,7 +153,7 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .backhome svg { width: 18px; height: 18px; }
 .backhome.hidden { display: none; }
 
-.topbar-actions { position: relative; display: flex; align-items: center; gap: 8px; }
+.topbar-actions { position: relative; display: flex; align-items: center; gap: 8px; margin-left: auto; }
 
 .iconbtn {
   position: relative;
