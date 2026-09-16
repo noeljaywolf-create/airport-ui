@@ -1145,8 +1145,10 @@ const end = NODES[seg.path[seg.path.length - 1]];
      CLOCK + TICKER
      ============================================================ */
   function tickClock() {
-    const now = new Date();
-    $('#clockTime').textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const el = $('#clockTime');
+    if (el.offsetParent === null) return;
+    const txt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    if (el.textContent !== txt) el.textContent = txt;
   }
   function renderTicker() {
     const run = TICKER.concat(TICKER).map((s) => `<span>${s}</span>`).join('');

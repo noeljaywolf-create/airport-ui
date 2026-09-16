@@ -4,6 +4,7 @@
    ============================================================ */
 
 :root {
+  --bottom-inset: env(safe-area-inset-bottom, 0px);
   --sky-50: #F0F9FF;
   --sky-100: #E0F2FE;
   --sky-200: #BAE6FD;
@@ -129,9 +130,7 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .navtab:hover { color: var(--sky-700); background: rgba(255,255,255,.7); }
 .navtab.active { background: #fff; color: var(--sky-700); box-shadow: var(--shadow-sm); }
 
-/* floating back-to-home button */
-.backhome {
-  position: fixed;
+.backhome { position: fixed;
   left: 16px;
   bottom: 16px;
   z-index: 80;
@@ -152,6 +151,10 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .backhome:hover { background: var(--sky-50); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .backhome svg { width: 18px; height: 18px; }
 .backhome.hidden { display: none; }
+
+:focus-visible { outline: 3px solid var(--sky-500); outline-offset: 2px; border-radius: 6px; }
+.map-canvas :focus-visible, .map-svg :focus-visible, .mpoi:focus, .mzone:focus, .mp-hit:focus { outline: 3px solid var(--orange-500); }
+button:focus:not(:focus-visible) { outline: none; }
 
 .topbar-actions { position: relative; display: flex; align-items: center; gap: 8px; margin-left: auto; }
 
@@ -756,8 +759,8 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   .drawer .navtab-m svg { width: 22px; height: 22px; }
   .drawer .navtab-m.active { background: var(--sky-600); color: #fff; box-shadow: var(--shadow-sm); }
   .kiosk { padding-bottom: 24px; }
-  .assist { right: 12px; left: 12px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); max-height: min(560px, calc(100dvh - 120px)); width: auto; }
-  .backhome { left: 12px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 85; }
+  .assist { right: 12px; left: 12px; bottom: calc(16px + var(--bottom-inset)); max-height: min(560px, calc(100dvh - 120px)); width: auto; }
+  .backhome { left: 12px; bottom: calc(16px + var(--bottom-inset)); z-index: 85; }
   .flights-head, .transport-head { flex-direction: column; align-items: stretch; }
   .flights-actions { flex-direction: column; align-items: stretch; }
   .flight-search input, .transport-search input { width: 100%; }
