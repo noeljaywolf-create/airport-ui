@@ -217,7 +217,7 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
   overflow: hidden; box-shadow: var(--shadow-sm);
 }
 .ticker-live { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 12px; letter-spacing: .08em; color: var(--sky-300); white-space: nowrap; }
-.ticker-track { flex: 1; overflow: hidden; mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent); }
+.ticker-track { flex: 1; overflow: hidden; white-space: nowrap; mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent); }
 .ticker-track span {
   display: inline-block; white-space: nowrap;
   font-size: 13.5px; font-weight: 600;
@@ -491,7 +491,10 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .dest-marker { pointer-events: none; }
 .dest-marker circle { fill: var(--orange-500); animation: bounce2 1.4s ease-in-out infinite; }
 .dest-marker .hollow { fill: none; stroke: var(--orange-500); stroke-width: 2; animation: pingRing 1.8s ease-out infinite; }
-.dest-marker text { font-size: 11px; font-weight: 800; fill: var(--orange-600); }
+.dest-name { pointer-events: none; }
+.dest-name rect { fill: #fff; fill-opacity: .97; stroke: var(--orange-500); stroke-width: 1.6; }
+.dest-name text { font-size: 13px; font-weight: 800; fill: var(--orange-600); letter-spacing: .02em; }
+.mp-label.clash { visibility: hidden; }
 .route-path { fill: none; stroke: var(--sky-500); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 10 8; animation: dashmove 1s linear infinite; }
 .route-glow { fill: none; stroke: rgba(14,165,233,.25); stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
 .route-travel { fill: var(--orange-500); stroke: #fff; stroke-width: 2; filter: drop-shadow(0 2px 6px rgba(249,115,22,.6)); }
@@ -655,6 +658,9 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .nav-overlay-actions { display: flex; gap: 10px; margin-top: 16px; }
 .nav-overlay-actions .btn { flex: 1; }
 
+/* ---------- mobile bottom tab bar ---------- */
+.tabbar { display: none; }
+
 /* ---------- animations ---------- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
@@ -702,7 +708,8 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
 @media (max-width: 1100px) {
   .quickgrid { grid-template-columns: repeat(2, 1fr); }
   .map-layout { grid-template-columns: 1fr; }
-  .map-canvas { order: -1; min-height: min(70vh, 620px); }
+  /* map box locked to the 1000:620 artboard -> fills width, zero letterbox bands */
+  .map-canvas { order: -1; min-height: 0; align-self: start; aspect-ratio: 1000 / 620; max-height: min(92dvh, 1000px); }
   .map-canvas svg, .map-svg svg { max-height: none; }
   .map-panel { max-height: none; }
   .transport-grid { grid-template-columns: repeat(2, 1fr); }
@@ -710,6 +717,22 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
 }
 @media (max-width: 900px) {
   .mainnav { display: none; }
+  .tabbar {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--sky-100); box-shadow: 0 -6px 24px rgba(12,74,110,.08);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    gap: 4px;
+  }
+  .navtab-m {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 8px 4px; min-height: 52px; border-radius: 12px; font-size: 11.5px; color: var(--muted); font-weight: 700;
+  }
+  .navtab-m svg { width: 22px; height: 22px; }
+  .navtab-m.active { background: var(--sky-600); color: #fff; box-shadow: var(--shadow-sm); }
+  .kiosk { padding-bottom: 96px; }
+  .assist { right: 12px; bottom: 84px; }
+  .backhome { left: 12px; bottom: 84px; }
   .flights-head, .transport-head { flex-direction: column; align-items: stretch; }
   .flights-actions { flex-direction: column; align-items: stretch; }
   .flight-search input, .transport-search input { width: 100%; }
@@ -721,26 +744,44 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   .transport-grid, .intel-cards { grid-template-columns: 1fr; }
   .disruption { flex-wrap: wrap; }
   .ticker-live { display: none; }
+  .kiosk { padding: 0 10px 96px; }
+  /* compact topbar so it never overflows on phones */
+  .topbar-inner { gap: 8px; padding: 8px 10px; }
+  .topbar-actions { gap: 6px; }
+  .brand { gap: 8px; }
   .brand-text span { display: none; }
-  .assist { right: 12px; bottom: 12px; }
-  .backhome { left: 12px; bottom: 12px; padding: 12px 16px; }
+  .clockchip, #langCode { display: none; }
+  .iconbtn { width: 40px; height: 40px; min-width: 40px; padding: 0 8px; }
+  .assist { right: 12px; bottom: 84px; }
+  .backhome { left: 12px; bottom: 84px; padding: 12px 16px; }
   .route-actions { flex-direction: column; }
   .route-actions .btn { width: 100%; }
 
   /* map always big enough to read */
-  .map-canvas { min-height: 52vh; border-radius: var(--radius-md); }
-  .mpoi svg { width: 30px; height: 30px; }
+  .map-canvas { border-radius: var(--radius-md); }
+  .mpoi svg { width: 34px; height: 34px; }
   .mp-label { font-size: 18px; font-weight: 800; }
   .zlabel text { font-size: 17px; }
-  .youhere-marker text, .dest-marker text { font-size: 17px; }
-  .mzone-label { font-size: 15px; }
-  rect.mzone[data-node] { width: 66px; height: 44px; }
-  circle.mzone[data-node] { r: 40px; }
-  rect.mzone[data-node] + text, circle.mzone[data-node] + text { font-size: 17px; }
-  .mp-hit { r: 34; }
+  .youhere-marker text { font-size: 17px; }
+  .dest-name rect { height: 26px; }
+  .dest-name text { font-size: 23px; }
+  .mzone-label { font-size: 16px; }
+  rect.mzone[data-node] { width: 72px; height: 48px; }
+  circle.mzone[data-node] { r: 44px; }
+  rect.mzone[data-node] + text, circle.mzone[data-node] + text { font-size: 19px; }
+  .mp-hit { r: 40; }
+  .floor-pill { font-size: 14px; padding: 9px 16px; }
   .map-zoom-controls { right: 10px; bottom: 10px; }
-  .zoombtn { width: 46px; height: 46px; }
+  .map-zoom-hint { font-size: 12px; padding: 8px 12px; }
+  .zoombtn { width: 50px; height: 50px; }
   .langmenu { max-height: 58vh; width: 200px; }
+}
+@media (max-width: 400px) {
+  .brand-text { display: none; }
+  .brand-mark { width: 40px; height: 40px; }
+  .hero-eyebrow { font-size: 12px; }
+  .hero-sub { font-size: 14px; }
+  .langmenu { width: 180px; right: -8px; left: auto; }
 }
 
 /* ---------- RTL (Arabic) ---------- */
@@ -757,4 +798,6 @@ html[dir="rtl"] .hero-eyebrow::before { display: none; }
 html[dir="rtl"] .board-row, html[dir="rtl"] .board-head { text-align: right; }
 html[dir="rtl"] .assist { right: auto; left: 16px; }
 html[dir="rtl"] .backhome { left: auto; right: 16px; }
+html[dir="rtl"] .tabbar { flex-direction: row-reverse; }
+html[dir="rtl"] .navtab-m span { margin-right: 0; }
 html[dir="rtl"] .assist-open .assist-ico { display: none; }

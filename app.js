@@ -631,12 +631,30 @@
     return `<g class="zlabel"><rect x="${x - w / 2}" y="${y - 11}" width="${w}" height="22" rx="11" fill="#fff" stroke="#BAE6FD" stroke-width="1.5"/><text x="${x}" y="${y + 4}" text-anchor="middle">${text}</text></g>`;
   }
 
+  // helper: rough text width in map units, and rect-intersection test
+  function txtW(str, size) { return (str || '').length * size * 0.6 + size; }
+  function hit(a, b) { return a.x < b.x2 && a.x2 > b.x && a.y < b.y2 && a.y2 > b.y; }
+
   function buildSvg(level, destId) {
     const parts = [];
     parts.push(`<svg viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Terminal map ${level}">`);
     parts.push('<g id="mapView">');
     parts.push('<defs><linearGradient id="mapBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDFEFF"/><stop offset="1" stop-color="#EAF6FE"/></linearGradient></defs>');
     parts.push(`<rect x="0" y="0" width="1000" height="620" rx="16" fill="url(#mapBg)"/>`);
+
+    // precompute destination name pill (for collision suppression)
+    let destName = null;
+    if (state.route) {
+      const seg = state.route.segments.find((s) => s.level === level);
+      if (seg && seg.path.length > 1) {
+const end = NODES[seg.path[seg.path.length - 1]];
+        const up = end.y > 330;
+        const w = txtW(end.label, 15) + 24;
+        const top = end.y + (up ? -52 : 24);
+        destName = { x: end.x, top, w, label: end.label, end, up };
+        destName.rect = () => ({ x: end.x - w / 2, x2: end.x + w / 2, y: top, y2: top + 26 });
+      }
+    }
 
     if (level === 'L2') {
       parts.push(zoneRect(85, 285, 880, 50));
@@ -674,13 +692,18 @@
       const cls = active ? 'mpoi hot' : 'mpoi';
       const labelY = n.y < 200 ? n.y - 20 : n.y + 22;
       const labelAnchor = 'middle';
+      let clash = false;
+      if (destName) {
+        const dw = txtW(n.label, 11.5);
+        clash = hit(destName.rect(), { x: n.x - dw / 2, x2: n.x + dw / 2, y: labelY - 3, y2: labelY + 9 });
+      }
       parts.push(`<g class="mp" data-node="${n.id}" transform="translate(${n.x},${n.y})">`);
       parts.push(`<g class="${cls}">`);
       parts.push(`<circle class="mp-hit" r="26" cx="0" cy="0"/>`);
       parts.push(`<circle class="bg" r="15" cx="0" cy="0"/>`);
       parts.push(`<g transform="translate(-10,-10)">${icon(n.icon, 20)}</g>`);
       parts.push('</g>');
-      parts.push(`<text class="mp-label" x="0" y="${labelY - n.y}" text-anchor="${labelAnchor}">${n.label}</text>`);
+      parts.push(`<text class="mp-label${clash ? ' clash' : ''}" x="0" y="${labelY - n.y}" text-anchor="${labelAnchor}">${n.label}</text>`);
       parts.push('</g>');
     });
 
@@ -688,7 +711,11 @@
     const zLabels = level === 'L2'
       ? [ [140, 42, 'PIER A — DEPARTURES'], [140, 588, 'PIER B — DEPARTURES'], [140, 301, 'MAIN CONCOURSE'], [935, 80, 'SKY LOUNGE'], [935, 270, 'GROUND TRANSPORT'] ]
       : [ [500, 52, 'BAGGAGE CLAIM'], [500, 220, 'CUSTOMS · PASSPORT CONTROL'], [150, 411, 'ARRIVALS HALL'], [927, 64, 'GROUND TRANSPORT'] ];
-    zLabels.forEach(([x, y, txt]) => parts.push(zoneLabel(x, y, txt)));
+    zLabels.forEach(([x, y, txt]) => {
+      const w = Math.max(44, txt.length * 7 + 20);
+      if (destName && hit(destName.rect(), { x: x - w / 2, x2: x + w / 2, y: y - 11, y2: y + 11 })) return;
+      parts.push(zoneLabel(x, y, txt));
+    });
 
     // You are here
     const yh = YOUHERE[level];
@@ -704,7 +731,10 @@
         parts.push(`<path class="route-path" d="${d}"/>`);
         parts.push(`<circle class="route-travel" r="7"><animateMotion dur="${Math.max(4, metersOf(seg.path) / (WALK * 0.4))}s" repeatCount="indefinite" path="${d}"/></circle>`);
         const end = NODES[seg.path[seg.path.length - 1]];
-        parts.push(`<g class="dest-marker"><g transform="translate(${end.x},${end.y})"><circle class="hollow" r="13"/><circle r="7"/><circle r="2.6" fill="#fff"/></g><text x="${end.x}" y="${end.y + 34}" text-anchor="middle">${end.label}</text></g>`);
+        parts.push(`<g class="dest-marker"><g transform="translate(${end.x},${end.y})"><circle class="hollow" r="13"/><circle r="7"/><circle r="2.6" fill="#fff"/></g></g>`);
+        if (destName) {
+          parts.push(`<g class="dest-name"><rect x="${destName.x - destName.w / 2}" y="${destName.top}" width="${destName.w}" height="26" rx="13"/><text x="${destName.x}" y="${destName.top + 19}" text-anchor="middle">${destName.label}</text></g>`);
+        }
         if (seg.viaLift) {
           const mid = NODES[seg.path[Math.floor(seg.path.length / 2)]];
           parts.push(`<g transform="translate(${mid.x},${mid.y - 46})"><rect x="-52" y="-14" width="104" height="24" rx="12" fill="#0369A1"/><text x="0" y="4" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff">LIFT TO ${seg.toLevel}</text></g>`);
@@ -743,7 +773,7 @@
     const bx0 = Math.min.apply(Math, xs), by0 = Math.min.apply(Math, ys);
     const bx1 = Math.max.apply(Math, xs), by1 = Math.max.apply(Math, ys);
     const PAD = 120;
-    const s = Math.max(1, Math.min(3.6, Math.min(MAP_W / (bx1 - bx0 + PAD * 2), MAP_H / (by1 - by0 + PAD * 2))));
+    const s = Math.max(1, Math.min(4.5, Math.min(MAP_W / (bx1 - bx0 + PAD * 2), MAP_H / (by1 - by0 + PAD * 2))));
     const cxm = (bx0 + bx1) / 2, cym = (by0 + by1) / 2;
     view.style.transform = `translate(${MAP_W / 2 - cxm * s}px, ${MAP_H / 2 - cym * s}px) scale(${s})`;
   }
