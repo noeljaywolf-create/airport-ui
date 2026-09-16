@@ -1190,6 +1190,14 @@ const end = NODES[seg.path[seg.path.length - 1]];
      BINDINGS + INIT
      ============================================================ */
   function bindAll() {
+    /* drawer */
+    function openDrawer() { $('#drawer').classList.add('open'); $('#drawerBackdrop').classList.add('open'); $('#menuBtn').setAttribute('aria-expanded','true'); }
+    function closeDrawer() { $('#drawer').classList.remove('open'); $('#drawerBackdrop').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded','false'); }
+    $('#menuBtn').addEventListener('click', () => { $('#drawer').classList.contains('open') ? closeDrawer() : openDrawer(); });
+    $('#drawerBackdrop').addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#drawer').classList.contains('open')) closeDrawer(); });
+    $$('.drawer .navtab').forEach((b) => b.addEventListener('click', closeDrawer));
+
     $$('.navtab').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
     $$('.quickcard').forEach((b) => {
       b.addEventListener('click', () => { showView(b.dataset.go); });
