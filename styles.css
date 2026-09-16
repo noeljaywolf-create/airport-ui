@@ -733,8 +733,8 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   .navtab-m svg { width: 22px; height: 22px; }
   .navtab-m.active { background: var(--sky-600); color: #fff; box-shadow: var(--shadow-sm); }
   .kiosk { padding-bottom: 96px; }
-  .assist { right: 12px; left: 12px; bottom: 84px; max-height: min(560px, calc(100dvh - 160px)); width: auto; }
-  .backhome { left: 12px; bottom: 84px; }
+  .assist { right: 12px; left: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); max-height: min(560px, calc(100dvh - 160px)); width: auto; }
+  .backhome { left: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 85; }
   .flights-head, .transport-head { flex-direction: column; align-items: stretch; }
   .flights-actions { flex-direction: column; align-items: stretch; }
   .flight-search input, .transport-search input { width: 100%; }
@@ -754,8 +754,8 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   .brand-text span { display: none; }
   .clockchip, #langCode { display: none; }
   .iconbtn { width: 40px; height: 40px; min-width: 40px; padding: 0 8px; }
-  .assist { right: 12px; left: 12px; bottom: 84px; max-height: min(560px, calc(100dvh - 160px)); width: auto; }
-  .backhome { left: 12px; bottom: 84px; }
+  .assist { right: 12px; left: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); max-height: min(560px, calc(100dvh - 160px)); width: auto; }
+  .backhome { left: 12px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 85; }
   .route-actions { flex-direction: column; }
   .route-actions .btn { width: 100%; }
 
@@ -803,3 +803,7 @@ html[dir="rtl"] .backhome { left: auto; right: 16px; }
 html[dir="rtl"] .tabbar { flex-direction: row-reverse; }
 html[dir="rtl"] .navtab-m span { margin-right: 0; }
 html[dir="rtl"] .assist-open .assist-ico { display: none; }
+@media (max-width: 900px) {
+  html[dir="rtl"] .assist { left: auto; right: 12px; }
+  html[dir="rtl"] .backhome { left: auto; right: 12px; }
+}
