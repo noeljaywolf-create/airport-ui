@@ -943,8 +943,9 @@ const end = NODES[seg.path[seg.path.length - 1]];
   /* ============================================================
      ASSISTANT
      ============================================================ */
-  function openAssistant() { $('#assist').classList.add('open'); $('#assist').setAttribute('aria-hidden', 'false'); setTimeout(() => $('#assistInput').focus(), 50); }
-  function closeAssistant() { $('#assist').classList.remove('open'); $('#assist').setAttribute('aria-hidden', 'true'); }
+  function openAssistant() { $('#assist').classList.add('open'); $('#assist').setAttribute('aria-hidden', 'false'); $('#assistBtn').classList.add('active'); setTimeout(() => $('#assistInput').focus(), 50); }
+  function closeAssistant() { $('#assist').classList.remove('open'); $('#assist').setAttribute('aria-hidden', 'true'); $('#assistBtn').classList.remove('active'); }
+  function toggleAssistant() { $('#assist').classList.contains('open') ? closeAssistant() : openAssistant(); }
   function addMsg(text, who) {
     const body = $('#assistBody');
     const div = document.createElement('div');
@@ -1056,7 +1057,7 @@ const end = NODES[seg.path[seg.path.length - 1]];
   }
   function bindAssistant() {
     $('#assistSend').addEventListener('click', () => { const v = $('#assistInput').value.trim(); if (v) answer(v); });
-    $('#assistInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { const v = e.target.value.trim(); if (v) answer(v); } });
+    $('#assistInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { const v = e.target.value.trim(); if (v) answer(v); } if (e.key === 'Escape') closeAssistant(); });
     $('#assistClose').addEventListener('click', closeAssistant);
     $('#assistBody').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-nav]');
@@ -1224,7 +1225,7 @@ const end = NODES[seg.path[seg.path.length - 1]];
     });
 
     // assistant
-    $('#assistBtn').addEventListener('click', openAssistant);
+    $('#assistBtn').addEventListener('click', toggleAssistant);
     bindAssistant();
 
     // hero search

@@ -453,7 +453,7 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .map-topinfo { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
 .floor-pill { background: var(--sky-900); color: #fff; font-weight: 800; font-size: 13px; padding: 8px 14px; border-radius: 999px; box-shadow: var(--shadow-sm); }
 .map-zoom-hint { background: rgba(255,255,255,.9); color: var(--muted); font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--sky-100); }
-.map-zoom-controls { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 8px; z-index: 5; }
+.map-zoom-controls { position: absolute; left: 14px; bottom: 14px; display: flex; gap: 8px; z-index: 5; }
 .zoombtn {
   width: 42px; height: 42px; border-radius: 12px;
   background: #fff; border: 1px solid var(--sky-100); box-shadow: var(--shadow-md);
@@ -599,7 +599,7 @@ button:focus-visible, input:focus-visible, .quickcard:focus-visible, .poichip:fo
 .assist-id { flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
 .assist-id strong { font-size: 15px; }
 .assist-id span { font-size: 11.5px; color: var(--sky-200); display: inline-flex; align-items: center; gap: 6px; }
-.assist-head .iconbtn { background: rgba(255,255,255,.14); border: none; color: #fff; }
+.assist-head .iconbtn { background: rgba(255,255,255,.3); border: 1px solid rgba(255,255,255,.25); color: #fff; width: 42px; height: 42px; border-radius: 12px; }
 .assist-body { height: 340px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--sky-50); }
 .msg { max-width: 85%; padding: 11px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; animation: fadeUp .25s ease; }
 .msg.user { align-self: flex-end; background: var(--sky-600); color: #fff; border-bottom-right-radius: 4px; }
@@ -771,7 +771,7 @@ html[data-access="true"] .poichip, html[data-access="true"] .quickcard { border-
   rect.mzone[data-node] + text, circle.mzone[data-node] + text { font-size: 19px; }
   .mp-hit { r: 40; }
   .floor-pill { font-size: 14px; padding: 9px 16px; }
-  .map-zoom-controls { right: 10px; bottom: 10px; }
+  .map-zoom-controls { left: 10px; bottom: 10px; }
   .map-zoom-hint { font-size: 12px; padding: 8px 12px; }
   .zoombtn { width: 50px; height: 50px; }
   .langmenu { max-height: 58vh; width: 200px; }
